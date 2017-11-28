@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->integer('student_id');
             $table->string('password');
             $table->macAddress('mac_address');
+            $table->string('serial_no');
             $table->integer('desk_no');
             $table->integer('state');
             $table->string('token')->nullable();
