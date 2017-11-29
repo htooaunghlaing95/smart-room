@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::resource('user', 'UserController');
+
+});
+
 Auth::routes();
 
 Route::post('/api/register', 'UserController@apiRegister')->name('api.register');
@@ -30,6 +38,5 @@ Route::group(['middleware' => 'token'], function (){
     Route::delete('/api/logout', 'UserController@apiLogout')->name('api.logout');
 
     Route::post('/api/user/{id}/state', 'UserController@apiState')->name('api.state');
-
 
 });
