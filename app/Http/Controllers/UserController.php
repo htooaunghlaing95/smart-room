@@ -106,7 +106,8 @@ class UserController extends Controller
     // This API is to show the single user by using id.
     public function apiUserShow($id, Request $request)
     {
-        $tokenuser = User::with('attendance')->where('token', $request->input('token'))->first();
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
         $user = User::with('attendance')->find($id);
 
         if ($user && $tokenuser == $user) {
@@ -130,6 +131,7 @@ class UserController extends Controller
     }
 
     //List all the users in the database
+    //This API is not working yet! need looping.
     public function apiUsers()
     {
         $users = User::Paginate(5);
@@ -145,6 +147,20 @@ class UserController extends Controller
             'time' =>$users->attendance->time,
             'present' =>$users->attendance->present
         ]);
+    }
+
+    public function apiState($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $state = $request->input('state');
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            $user->state = $state;
+            $user->save();
+        }
+
     }
 
     //This function is to generate the token.

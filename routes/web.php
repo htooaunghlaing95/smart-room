@@ -29,5 +29,7 @@ Route::group(['middleware' => 'token'], function (){
 
     Route::delete('/api/logout', 'UserController@apiLogout')->name('api.logout');
 
+    Route::post('/api/user/{id}/state', 'UserController@apiState')->name('api.state');
+
 
 });
