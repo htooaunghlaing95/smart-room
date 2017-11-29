@@ -123,7 +123,6 @@ class UserController extends Controller
                 'present'=>$user->attendance->present
             ]);
         }
-
         return response()->json([
             'status' => 'Fail',
             'message' => 'You dont have access to see this user.'
@@ -131,24 +130,30 @@ class UserController extends Controller
     }
 
     //List all the users in the database
-    //This API is not working yet! need looping.
     public function apiUsers()
     {
         $users = User::Paginate(5);
+        $newusers = array();
+        $id = 0;
+        foreach ($users as $user){
+            $newusers[$id++]=array(
+                'id'=>$user->id,
+                'name'=>$user->name,
+                'studentID'=>$user->student_id,
+                'macAddress'=>$user->mac_address,
+                'serialNo'=>$user->serial_no,
+                'deskNo'=>$user->desk_no,
+                'state'=>$user->state,
+                'time' =>$user->attendance->time,
+                'present' =>$user->attendance->present
+            );
+        }
 
-        return response()->json([
-            'id'=>$users->id,
-            'name'=>$users->name,
-            'studentID'=>$users->student_id,
-            'macAddress'=>$users->mac_address,
-            'serialNo'=>$users->serial_no,
-            'deskNo'=>$users->desk_no,
-            'state'=>$users->state,
-            'time' =>$users->attendance->time,
-            'present' =>$users->attendance->present
-        ]);
+        return response()->json($newusers);
     }
 
+
+    // This API is to change the state(Light On/OFF) of the user.
     public function apiState($id, Request $request)
     {
         $tokenuser = User::with('attendance')
@@ -159,6 +164,17 @@ class UserController extends Controller
         if($user && $tokenuser == $user){
             $user->state = $state;
             $user->save();
+
+            return response()->json([
+                'status' => 'Ok',
+                'message' => 'State Changed',
+                'user' => $user->name
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'Fail',
+                'message' => 'Your state does not changed'
+            ]);
         }
 
     }
