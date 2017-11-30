@@ -5,11 +5,64 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Attendance;
+use App\UserProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function show($id)
+    {
+        $user = UserProfile::findOrFail($id);
+        $this->authorize('modifyUser', $user);
+
+        return view('user.index',  ['user'=>$user]);
+
+    }
+
+    public function edit($id)
+    {
+        $user = UserProfile::findOrFail($id);
+        $attendance = Attendance::find($id);
+        $this->authorize('modifyUser', $user);
+        //return to the edit view
+        return view('user.edit', compact('user', 'attendance'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
+        if(!empty($input['password'])){
+
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            $input = array_except($input,array('password'));
+        }
+
+        $user = User::findOrFail($id);
+//        $attendance = Attendance::find($id);
+
+        $user->name = $request->name;
+        $user->student_id = $request->student_id;
+        $user->mac_address = $request->mac_address;
+        $user->serial_no = $request->serial_no;
+        $user->desk_no = $request->desk_no;
+
+        $user->update($input);
+
+//        $device->update($input);
+
+
+        return redirect('/user/'.$id)
+            ->with('alert-success', "Data Has Been Saved");
+    }
+
+
+    public function create()
+    {
+        return view('user.create');
+    }
 
     //This API is for User Registration.
     public function apiRegister(Request $request)
