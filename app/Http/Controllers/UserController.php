@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    //This API is for User Registration.
+    /*
+     * This API is for User Registration.
+     */
     public function apiRegister(Request $request)
     {
         $name = $request->input('name');
@@ -21,7 +23,6 @@ class UserController extends Controller
         $serial_no = $request->input('serial_no');
         $desk_no = $request->input('desk_no');
         $state = $request->input('state');
-        $user_id = $request->input('user_id');
         $time = $request->input('time');
         $present = $request->input('present');
 
@@ -51,7 +52,9 @@ class UserController extends Controller
 
     }
 
-    //This API is for UserLogin
+    /*
+     * This API is for UserLogin
+     */
     public function apiLogin(Request $request)
     {
         $student_id = $request->input('student_id');
@@ -80,7 +83,10 @@ class UserController extends Controller
         }
     }
 
-    //This API is for logging out the user
+
+    /*
+     * This API is for logging out the user
+     */
     public function apiLogout(Request $request)
     {
         $user = User::where('token', $request->input('token'))->first();
@@ -103,7 +109,9 @@ class UserController extends Controller
         ]);
     }
 
-    // This API is to show the single user by using id.
+    /*
+     * This API is to show the single user by using id.
+     */
     public function apiUserShow($id, Request $request)
     {
         $tokenuser = User::with('attendance')
@@ -129,7 +137,9 @@ class UserController extends Controller
         ]);
     }
 
-    //List all the users in the database
+    /*
+     * List all the users in the database
+     */
     public function apiUsers()
     {
         $users = User::Paginate(5);
@@ -152,8 +162,9 @@ class UserController extends Controller
         return response()->json($newusers);
     }
 
-
-    // This API is to change the state(Light On/OFF) of the user.
+    /*
+     * This API is to change the state(Light On/OFF) of the user.
+     */
     public function apiState($id, Request $request)
     {
         $tokenuser = User::with('attendance')
@@ -179,7 +190,9 @@ class UserController extends Controller
 
     }
 
-    //This function is to generate the token.
+    /*
+     * This function is to generate the token.
+     */
     private function randomDigit($length, $count)
     {
         $codes = [];
