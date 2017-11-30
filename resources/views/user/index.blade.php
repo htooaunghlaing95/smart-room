@@ -19,16 +19,16 @@
                         </div>
                         <hr>
                         <ul class="container details" >
-                            <li><p><b class="material-icons" style="font-size:18px">dvr</b>         {{$user->mac_address}}</p></li>
-                            <li><p><b class="material-icons" style="font-size:18px">dvr</b>          {{$user->desk_no}}</p></li>
-                            <li><p><b class="material-icons" style="font-size:18px">group</b>         {{$user->student_id}}</p></li>
-                            <li><p><b class="material-icons" style="font-size:18px">group</b>         {{$user->serial_no}}</p></li>
-                            <li><p><b class="material-icons" style="font-size:18px">group</b>         {{$user->state}}</p></li>
+                            <li><p><i class="fa fa-wifi"></i>{{$user->mac_address}}</p></li>
+                            <li><p><img src="{{ URL::to('/img/table.png') }}" width="18px" height="18px"/>{{$user->desk_no}}</p></li>
+                            <li><p><b class="fa fa-id-card fa-2x" style="font-size:18px"></b>{{$user->student_id}}</p></li>
+                            <li><p><b class="fa fa-mobile-phone fa-2x"></b>{{$user->serial_no}}</p></li>
+                            <li><p><b class="fa fa-lightbulb-o fa-2x"></b>{{$user->state}}</p></li>
                         </ul>
                         <hr>
                         <form>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <a href="{{route('user.edit', $user->id)}}", class="btn btn-primary">Edit</a>
+                            <a href="{{route('user.edit', $user->id)}}", class="btn btn-primary"><i class="fa fa-edit pull-left"> Edit</i></a>
                         </form>
                     </div>
                 </div>
