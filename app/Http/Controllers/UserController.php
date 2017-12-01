@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
+    /*
+     * WebApp CRUD
+     */
+
     public function show($id)
     {
         $user = UserProfile::findOrFail($id);
@@ -64,6 +68,9 @@ class UserController extends Controller
         return view('user.create');
     }
 
+    /*
+     *  API Functions
+     */
     //This API is for User Registration.
     public function apiRegister(Request $request)
     {
@@ -231,6 +238,40 @@ class UserController extends Controller
         }
 
     }
+
+    public function apiGetState($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            return response()->json([
+                'Id' => $user->id,
+                'State' => $user->state
+            ]);
+        }
+        return response()->json([
+        'status' => 'Fail',
+        'message' => 'You dont have access to see this user.'
+    ]);
+    }
+
+    public function apiFetch()
+    {
+        $users = User::Paginate(5);
+        $fetchusers = array();
+        $id = 0;
+        foreach ($users as $user){
+            $fetchusers[$id++]=array(
+                'Id'=>$user->id,
+                'Token' => $user->token
+            );
+        }
+
+        return response()->json($fetchusers);
+    }
+
 
     //This function is to generate the token.
     private function randomDigit($length, $count)

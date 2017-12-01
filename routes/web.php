@@ -39,4 +39,8 @@ Route::group(['middleware' => 'token'], function (){
 
     Route::post('/api/user/{id}/state', 'UserController@apiState')->name('api.state');
 
+    Route::get('/api/user/{id}/getstate', 'UserController@apiGetState')->name('api.getState');
+
+    Route::get('/api/fetch', 'UserController@apiFetch')->name('api.fetch');
+
 });
