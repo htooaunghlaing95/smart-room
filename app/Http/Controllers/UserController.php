@@ -239,6 +239,7 @@ class UserController extends Controller
 
     }
 
+    //This API is for getting the state of each user.
     public function apiGetState($id, Request $request)
     {
         $tokenuser = User::with('attendance')
@@ -257,6 +258,7 @@ class UserController extends Controller
     ]);
     }
 
+    //This API fetch all users' id and token.
     public function apiFetch()
     {
         $users = User::Paginate(5);

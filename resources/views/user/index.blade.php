@@ -19,11 +19,44 @@
                         </div>
                         <hr>
                         <ul class="container details" >
-                            <li><p><i class="fa fa-wifi"></i>{{$user->mac_address}}</p></li>
-                            <li><p><img src="{{ URL::to('/img/table.png') }}" width="18px" height="18px"/>{{$user->desk_no}}</p></li>
-                            <li><p><b class="fa fa-id-card fa-2x" style="font-size:18px"></b>{{$user->student_id}}</p></li>
-                            <li><p><b class="fa fa-mobile-phone fa-2x"></b>{{$user->serial_no}}</p></li>
-                            <li><p><b class="fa fa-lightbulb-o fa-2x"></b>{{$user->state}}</p></li>
+                            <li><p>
+
+                                    <i class="fa fa-wifi"></i>
+                                    {{$user->mac_address}}
+
+                                </p>
+                            </li>
+                            <li><p>
+
+                                    <img src="{{ URL::to('/img/table.png') }}" width="18px" height="18px"/>
+                                    {{$user->desk_no}}
+
+                                </p>
+                            </li>
+                            <li><p>
+
+                                    <b class="fa fa-id-card fa-2x" style="font-size:18px"></b>
+                                    {{$user->student_id}}
+
+                                </p>
+                            </li>
+                            <li><p>
+
+                                    <b class="fa fa-mobile-phone fa-2x"></b>
+                                    {{$user->serial_no}}
+
+                                </p>
+                            </li>
+                            <li><p>
+
+                                    <b class="fa fa-lightbulb-o fa-2x"></b>
+                                    @php
+                                    $state = $user->state;
+                                    if($state == 1){ echo "Light is On";}
+                                    else{echo "Light is Off";}
+                                    @endphp
+                                </p>
+                            </li>
                         </ul>
                         <hr>
                         <form>
