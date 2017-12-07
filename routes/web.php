@@ -43,4 +43,8 @@ Route::group(['middleware' => 'token'], function (){
 
     Route::get('/api/fetch', 'UserController@apiFetch')->name('api.fetch');
 
+    Route::get('/api/init', 'UserController@apiInit')->name('api.init');
+
+    Route::post('/api/user/{id}/present', 'UserController@apiPresent')->name('api.present');
+
 });

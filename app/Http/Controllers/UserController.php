@@ -239,7 +239,34 @@ class UserController extends Controller
 
     }
 
-    //This API is for getting the state of each user.
+    //THIS API INSERT PRESENT
+    public function apiPresent($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $present = $request->input('present');
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            $user->attendance->present = $present;
+            $user->attendance->save();
+
+            return response()->json([
+                'status' => 'Ok',
+                'message' => 'Present Changed',
+                'Present' => $user->attendance->present
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'Fail',
+                'message' => 'Your state does not changed'
+            ]);
+        }
+
+    }
+
+
+    //This API RETURN SERIAL_NO,lIGHT_STATE AND ID OF SPECIFIC USER
     public function apiGetState($id, Request $request)
     {
         $tokenuser = User::with('attendance')
@@ -249,13 +276,29 @@ class UserController extends Controller
         if($user && $tokenuser == $user){
             return response()->json([
                 'Id' => $user->id,
-                'State' => $user->state
+                'State' => $user->state,
+                'SerialNo'=>$user->Serial_no
             ]);
         }
         return response()->json([
         'status' => 'Fail',
         'message' => 'You dont have access to see this user.'
     ]);
+    }
+
+    //Return EVERY 'MAC' AND 'CURRENT_LIGHT_STATE'
+    public function apiInit()
+    {
+        $users = User::Paginate(5);
+        $initusers = array();
+        $id=0;
+        foreach ($users as $user){
+            $initusers[$id++]=array(
+              'ID'=>$user->id,
+              'State'=>$user->state
+            );
+        }
+        return response()->json($initusers);
     }
 
     //This API fetch all users' id and token.
