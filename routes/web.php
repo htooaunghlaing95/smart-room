@@ -47,6 +47,8 @@ Route::group(['middleware' => 'token'], function (){
 
     Route::post('/api/user/{id}/present', 'UserController@apiPresent')->name('api.present');
 
+    Route::get('/api/user/{id}/retrieve', 'UserController@apiRetrieve');
+
     Route::get('/api/user/{id}/getattand', 'UserController@apiGetAttend')->name('api.getAttand');
 
 });

@@ -308,6 +308,27 @@ class UserController extends Controller
         ]);
     }
 
+    //THIS API IS FOR MOBILE, RETURN 'MAC', 'STUDENT_ID', 'STUDENT_NAME', 'STATE'.
+    public function apiRetrieve($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            return response()->json([
+                'MacAddress' => $user->mac_address,
+                'CompName'=>$user->name,
+                'StudentID' => $user->student_id,
+                'State' => $user->state,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Fail',
+            'message' => 'You dont have access to see this user.'
+        ]);
+    }
+
     //Return EVERY 'MAC' AND 'CURRENT_LIGHT_STATE'
     public function apiInit()
     {
@@ -323,7 +344,7 @@ class UserController extends Controller
         return response()->json($initusers);
     }
 
-    //This API fetch all users' id and token.
+    //This API fetch all users' id and mac_address.
     public function apiFetch()
     {
         $users = User::Paginate(5);
@@ -332,7 +353,7 @@ class UserController extends Controller
         foreach ($users as $user){
             $fetchusers[$id++]=array(
                 'Id'=>$user->id,
-                'Token' => $user->token
+                'MacAddress' => $user->mac_address
             );
         }
 
