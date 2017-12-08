@@ -246,15 +246,15 @@ class UserController extends Controller
 
             $attendance = new Attendance;
             $attendance->present = $present;
-            $attendance->date = Carbon::now()->format('d-m-Y');
-            $attendance->time = Carbon::now()->format('H-i');
+            $attendance->date = Carbon::now()->format('Y-m-d');
+            $attendance->time = Carbon::now('Asia/Bangkok')->format('H:i:s');
             $attendance->user_id = $user->id;
             $attendance->save();
 
             return response()->json([
                 'status' => 'Ok',
                 'message' => 'Present Changed',
-                'Present' => $user->attendance->present
+                'Present' => $attendance->present
             ]);
         }else{
             return response()->json([
@@ -286,6 +286,28 @@ class UserController extends Controller
     ]);
     }
 
+    //THIS API RETURN MAC_ADDRESS,SERIAL_NO,DATE,TIME AND PRESENT.
+    public function apiGetAttend($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            return response()->json([
+                'MacAddress' => $user->mac_address,
+                'SerialNo'=>$user->serial_no,
+                'Date' => $user->attendance->date,
+                'Time' => $user->attendance->time,
+                'Present' => $user->attendance->present
+            ]);
+        }
+        return response()->json([
+            'status' => 'Fail',
+            'message' => 'You dont have access to see this user.'
+        ]);
+    }
+
     //Return EVERY 'MAC' AND 'CURRENT_LIGHT_STATE'
     public function apiInit()
     {
@@ -294,7 +316,7 @@ class UserController extends Controller
         $id=0;
         foreach ($users as $user){
             $initusers[$id++]=array(
-              'ID'=>$user->id,
+              'MacAddress'=>$user->mac_address,
               'State'=>$user->state
             );
         }
