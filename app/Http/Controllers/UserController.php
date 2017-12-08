@@ -243,10 +243,13 @@ class UserController extends Controller
         $user = User::with('attendance')->find($id);
 
         if($user && $tokenuser == $user){
-            $user->attendance->present = $present;
-            $user->attendance->date = Carbon::now()->format('d-m-Y');
-            $user->attendance->time = Carbon::now()->format('H-i');
-            $user->attendance->save();
+
+            $attendance = new Attendance;
+            $attendance->present = $present;
+            $attendance->date = Carbon::now()->format('d-m-Y');
+            $attendance->time = Carbon::now()->format('H-i');
+            $attendance->user_id = $user->id;
+            $attendance->save();
 
             return response()->json([
                 'status' => 'Ok',
