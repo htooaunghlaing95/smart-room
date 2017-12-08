@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\User;
 use App\Attendance;
@@ -94,12 +95,6 @@ class UserController extends Controller
             'desk_no' => $desk_no,
             'state' => $state,
             'token' => $this->randomDigit(config('smartroom.token_length'), 1) [0]
-        ]);
-
-        $attendance = Attendance::create([
-            'user_id' => $user->id,
-            'time' => $time,
-            'present' => $present,
         ]);
 
         return response()->json([
@@ -249,6 +244,8 @@ class UserController extends Controller
 
         if($user && $tokenuser == $user){
             $user->attendance->present = $present;
+            $user->attendance->date = Carbon::now()->format('d-m-Y');
+            $user->attendance->time = Carbon::now()->format('H-i');
             $user->attendance->save();
 
             return response()->json([
