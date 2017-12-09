@@ -285,7 +285,7 @@ class UserController extends Controller
             return response()->json([
                 'Id' => $user->id,
                 'State' => $user->state,
-                'SerialNo'=>$user->Serial_no
+                'SerialNo'=>$user->serial_no
             ]);
         }
         return response()->json([
@@ -305,9 +305,9 @@ class UserController extends Controller
             return response()->json([
                 'MacAddress' => $user->mac_address,
                 'SerialNo'=>$user->serial_no,
-                'Date' => $user->attendance->date,
-                'Time' => $user->attendance->time,
-                'Present' => $user->attendance->present
+                'Date' => $user->attendance->last()->date,
+                'Time' => $user->attendance->last()->time,
+                'Present' => $user->attendance->last()->present
             ]);
         }
         return response()->json([
