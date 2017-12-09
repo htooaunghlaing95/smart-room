@@ -27,6 +27,10 @@
                     @endforeach
                 </table>
             </div>
+            <form>
+                <input  type="hidden" name="_token" value="{{ csrf_token() }}">
+                <a href="{{ URL::previous() }}", class="btn btn-primary"><i class="fa fa-backward pull-left"> Back</i></a>
+            </form>
         </div>
     </div>
 @stop

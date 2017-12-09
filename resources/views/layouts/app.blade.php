@@ -31,9 +31,9 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <h4>
                         Smart Room
-                    </a>
+                    </h4>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
