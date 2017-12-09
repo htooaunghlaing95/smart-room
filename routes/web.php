@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('user', 'UserController');
 
-    Route::get('{id}/attendance/', ['as' => 'user.attendance', 'uses' => 'UserController@attendance']);
+    Route::get('/attendance/{id}', ['as' => 'user.attendance', 'uses' => 'UserController@attendance']);
 
 });
 

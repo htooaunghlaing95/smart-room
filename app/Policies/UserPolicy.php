@@ -22,6 +22,7 @@ class UserPolicy
 
     public function modifyUser(User $user, UserProfile $profile)
     {
+        //dd($user->id, $profile->id);
         return $user->id === $profile->id;
 
     }

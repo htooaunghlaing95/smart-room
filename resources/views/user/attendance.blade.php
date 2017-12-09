@@ -17,12 +17,14 @@
 
                     <?php $no=1; ?>
 
+                    @foreach($users->attendance()->get() as $attendance)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{$user->attendance->date}}</td>
-                        <td>{{$user->attendance->time}}</td>
-                        <td>{{$user->attendance->present}}</td>
+                        <td>{{$attendance->date}}</td>
+                        <td>{{$attendance->time}}</td>
+                        <td>{{$attendance->present}}</td>
                     </tr>
+                    @endforeach
                 </table>
             </div>
         </div>

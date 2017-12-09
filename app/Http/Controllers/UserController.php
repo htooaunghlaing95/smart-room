@@ -71,9 +71,10 @@ class UserController extends Controller
 
     public function attendance()
     {
-        $this->authorize('modifyUser', auth()->user());
-
-        return view ('user.attendance');
+       // $this->authorize('modifyUser', auth()->user());
+        $users = auth::user();
+        //dd($users->attendance()->get());
+        return view ('user.attendance', compact('users'));
     }
 
     /*
