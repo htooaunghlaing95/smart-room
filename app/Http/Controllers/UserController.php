@@ -69,6 +69,13 @@ class UserController extends Controller
         return view('user.create');
     }
 
+    public function attendance()
+    {
+        $this->authorize('modifyUser', auth()->user());
+
+        return view ('user.attendance');
+    }
+
     /*
      *  API Functions
      */

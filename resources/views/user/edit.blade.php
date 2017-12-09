@@ -27,12 +27,17 @@
 
                     <div class="form-group{{($errors->has('student_id')) ? $errors->first('student_id'): ''}}">
                         <input type="text" name="student_id" class="form-control" placeholder="Student Id" value="{{$user->student_id}}">
-                        {!! $errors->first('mac_address', '<p class="help-block">:message</p>') !!}
+                        {!! $errors->first('student_id', '<p class="help-block">:message</p>') !!}
                     </div>
 
                     <div class="form-group{{($errors->has('serial_no')) ? $errors->first('serial_no'): ''}}">
                         <input type="text" name="serial_no" class="form-control" placeholder="Serial No" value="{{$user->serial_no}}">
-                        {!! $errors->first('mac_address', '<p class="help-block">:message</p>') !!}
+                        {!! $errors->first('serial_no', '<p class="help-block">:message</p>') !!}
+                    </div>
+
+                    <div class="form-group{{($errors->has('desk_no')) ? $errors->first('desk_no'): ''}}">
+                        <input type="text" name="desk_no" class="form-control" placeholder="Desk No" value="{{$user->desk_no}}">
+                        {!! $errors->first('desk_no', '<p class="help-block">:message</p>') !!}
                     </div>
 
                     <div class="form-group{{($errors->has('password')) ? $errors->first('password'): ''}}">

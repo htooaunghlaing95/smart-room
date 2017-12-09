@@ -59,10 +59,18 @@
                             </li>
                         </ul>
                         <hr>
-                        <form>
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <a href="{{route('user.edit', $user->id)}}", class="btn btn-primary"><i class="fa fa-edit pull-left"> Edit</i></a>
-                        </form>
+
+                        <tr>
+                            <td>
+                                <form>
+                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a href="{{route('user.edit', $user->id)}}", class="btn btn-primary"><i class="fa fa-edit pull-left"> Edit</i></a>
+
+                                    <input  type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a href="{{route('user.attendance', $user->id)}}", class="btn btn-primary"><i class="fa fa-university pull-left"> Attendance</i></a>
+                                </form>
+                            </td>
+                        </tr>
                     </div>
                 </div>
             </div>
