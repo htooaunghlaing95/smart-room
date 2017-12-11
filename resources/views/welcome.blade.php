@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Welcome to Smart Room
+                    Welcome to Smart Work Space
                 </div>
 
                 {{--<div class="links">--}}
