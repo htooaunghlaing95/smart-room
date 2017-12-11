@@ -207,8 +207,8 @@ class UserController extends Controller
                 'serialNo'=>$user->serial_no,
                 'deskNo'=>$user->desk_no,
                 'state'=>$user->state,
-                'time' =>$user->attendance->time,
-                'present' =>$user->attendance->present
+                //'time' =>$user->attendance->time,
+                //'present' =>$user->attendance->present
             );
         }
 
