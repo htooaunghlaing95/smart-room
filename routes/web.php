@@ -15,6 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::resource('user', 'UserController');
+
+    Route::get('/attendance/{id}', ['as' => 'user.attendance', 'uses' => 'UserController@attendance']);
+
+});
+
 Auth::routes();
 
 Route::post('/api/register', 'UserController@apiRegister')->name('api.register');
@@ -31,5 +41,16 @@ Route::group(['middleware' => 'token'], function (){
 
     Route::post('/api/user/{id}/state', 'UserController@apiState')->name('api.state');
 
+    Route::get('/api/user/{id}/getstate', 'UserController@apiGetState')->name('api.getState');
+
+    Route::get('/api/fetch', 'UserController@apiFetch')->name('api.fetch');
+
+    Route::get('/api/init', 'UserController@apiInit')->name('api.init');
+
+    Route::post('/api/user/{id}/present', 'UserController@apiPresent')->name('api.present');
+
+    Route::get('/api/user/{id}/retrieve', 'UserController@apiRetrieve');
+
+    Route::get('/api/user/{id}/getattand', 'UserController@apiGetAttend')->name('api.getAttand');
 
 });

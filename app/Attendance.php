@@ -9,7 +9,7 @@ class Attendance extends Model
     protected $table = 'attendance';
 
     protected $fillable = [
-      'user_id', 'time', 'present',
+      'user_id', 'time','date', 'present',
     ];
 
     public function users()

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\User;
 use App\Attendance;
+use App\UserProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +14,73 @@ class UserController extends Controller
 {
 
     /*
-     * This API is for User Registration.
+     * WebApp CRUD
      */
+
+    public function show($id)
+    {
+        $user = UserProfile::findOrFail($id);
+        $this->authorize('modifyUser', $user);
+
+        return view('user.index',  ['user'=>$user]);
+
+    }
+
+    public function edit($id)
+    {
+        $user = UserProfile::findOrFail($id);
+        $attendance = Attendance::find($id);
+        $this->authorize('modifyUser', $user);
+        //return to the edit view
+        return view('user.edit', compact('user', 'attendance'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
+        if(!empty($input['password'])){
+
+            $input['password'] = Hash::make($input['password']);
+        }else{
+            $input = array_except($input,array('password'));
+        }
+
+        $user = User::findOrFail($id);
+//        $attendance = Attendance::find($id);
+
+        $user->name = $request->name;
+        $user->student_id = $request->student_id;
+        $user->mac_address = $request->mac_address;
+        $user->serial_no = $request->serial_no;
+        $user->desk_no = $request->desk_no;
+
+        $user->update($input);
+
+//        $device->update($input);
+
+
+        return redirect('/user/'.$id)
+            ->with('alert-success', "Data Has Been Saved");
+    }
+
+
+    public function create()
+    {
+        return view('user.create');
+    }
+
+    public function attendance()
+    {
+       // $this->authorize('modifyUser', auth()->user());
+        $users = auth::user();
+        //dd($users->attendance()->get());
+        return view ('user.attendance', compact('users'));
+    }
+
+    /*
+     *  API Functions
+     */
+    //This API is for User Registration.
     public function apiRegister(Request $request)
     {
         $name = $request->input('name');
@@ -35,12 +102,6 @@ class UserController extends Controller
             'desk_no' => $desk_no,
             'state' => $state,
             'token' => $this->randomDigit(config('smartroom.token_length'), 1) [0]
-        ]);
-
-        $attendance = Attendance::create([
-            'user_id' => $user->id,
-            'time' => $time,
-            'present' => $present,
         ]);
 
         return response()->json([
@@ -154,8 +215,8 @@ class UserController extends Controller
                 'serialNo'=>$user->serial_no,
                 'deskNo'=>$user->desk_no,
                 'state'=>$user->state,
-                'time' =>$user->attendance->time,
-                'present' =>$user->attendance->present
+                //'time' =>$user->attendance->time,
+                //'present' =>$user->attendance->present
             );
         }
 
@@ -193,6 +254,134 @@ class UserController extends Controller
     /*
      * This function is to generate the token.
      */
+    //THIS API INSERT PRESENT
+    public function apiPresent($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $present = $request->input('present');
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+
+            $attendance = new Attendance;
+            $attendance->present = $present;
+            $attendance->date = Carbon::now()->format('Y-m-d');
+            $attendance->time = Carbon::now('Asia/Bangkok')->format('H:i:s');
+            $attendance->user_id = $user->id;
+            $attendance->save();
+
+            return response()->json([
+                'status' => 'Ok',
+                'message' => 'Present Changed',
+                'Present' => $attendance->present
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'Fail',
+                'message' => 'Your state does not changed'
+            ]);
+        }
+
+    }
+
+
+    //This API RETURN SERIAL_NO,lIGHT_STATE AND ID OF SPECIFIC USER
+    public function apiGetState($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            return response()->json([
+                'Id' => $user->id,
+                'State' => $user->state,
+                'SerialNo'=>$user->serial_no
+            ]);
+        }
+        return response()->json([
+        'status' => 'Fail',
+        'message' => 'You dont have access to see this user.'
+    ]);
+    }
+
+    //THIS API RETURN MAC_ADDRESS,SERIAL_NO,DATE,TIME AND PRESENT.
+    public function apiGetAttend($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            return response()->json([
+                'MacAddress' => $user->mac_address,
+                'SerialNo'=>$user->serial_no,
+                'Date' => $user->attendance->last()->date,
+                'Time' => $user->attendance->last()->time,
+                'Present' => $user->attendance->last()->present
+            ]);
+        }
+        return response()->json([
+            'status' => 'Fail',
+            'message' => 'You dont have access to see this user.'
+        ]);
+    }
+
+    //THIS API IS FOR MOBILE, RETURN 'MAC', 'STUDENT_ID', 'STUDENT_NAME', 'STATE'.
+    public function apiRetrieve($id, Request $request)
+    {
+        $tokenuser = User::with('attendance')
+            ->where('token', $request->input('token'))->first();
+        $user = User::with('attendance')->find($id);
+
+        if($user && $tokenuser == $user){
+            return response()->json([
+                'MacAddress' => $user->mac_address,
+                'CompName'=>$user->name,
+                'StudentID' => $user->student_id,
+                'State' => $user->state,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Fail',
+            'message' => 'You dont have access to see this user.'
+        ]);
+    }
+
+    //Return EVERY 'MAC' AND 'CURRENT_LIGHT_STATE'
+    public function apiInit()
+    {
+        $users = User::Paginate(5);
+        $initusers = array();
+        $id=0;
+        foreach ($users as $user){
+            $initusers[$id++]=array(
+              'MacAddress'=>$user->mac_address,
+              'State'=>$user->state
+            );
+        }
+        return response()->json($initusers);
+    }
+
+    //This API fetch all users' id and mac_address.
+    public function apiFetch()
+    {
+        $users = User::Paginate(5);
+        $fetchusers = array();
+        $id = 0;
+        foreach ($users as $user){
+            $fetchusers[$id++]=array(
+                'Id'=>$user->id,
+                'MacAddress' => $user->mac_address
+            );
+        }
+
+        return response()->json($fetchusers);
+    }
+
+
+    //This function is to generate the token.
     private function randomDigit($length, $count)
     {
         $codes = [];

@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class UserProfile extends Authenticatable
 {
     use Notifiable;
 
@@ -31,6 +31,6 @@ class User extends Authenticatable
 
     public function attendance()
     {
-        return $this->hasMany('App\Attendance', 'user_id');
+        return $this->hasOne('App\Attendance');
     }
 }

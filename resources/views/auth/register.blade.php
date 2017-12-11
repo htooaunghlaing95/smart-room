@@ -25,15 +25,71 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                        <div class="form-group{{ $errors->has('student_id') ? ' has-error' : '' }}">
+                            <label for="student_id" class="col-md-4 control-label">Student ID</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="student_id" type="text" class="form-control" name="student_id" value="{{ old('student_id') }}" required>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('student_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('student_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('mac_address') ? ' has-error' : '' }}">
+                            <label for="mac_address" class="col-md-4 control-label">Mac Address</label>
+
+                            <div class="col-md-6">
+                                <input id="mac_address" type="text" class="form-control" name="mac_address" value="{{ old('mac_address') }}" required>
+
+                                @if ($errors->has('mac_address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mac_address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('serial_no') ? ' has-error' : '' }}">
+                            <label for="serial_no" class="col-md-4 control-label">Serial No</label>
+
+                            <div class="col-md-6">
+                                <input id="serial_no" type="text" class="form-control" name="serial_no" value="{{ old('serial_no') }}" required>
+
+                                @if ($errors->has('serial_no'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('serial_no') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('state') ? ' has-error' : '' }}">
+                            <label for="state" class="col-md-4 control-label">State</label>
+
+                            <div class="col-md-6">
+                                <input id="state" type="text" class="form-control" name="state" value="{{ old('state') }}" required>
+
+                                @if ($errors->has('state'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('state') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('desk_no') ? ' has-error' : '' }}">
+                            <label for="desk_no" class="col-md-4 control-label">Desk</label>
+
+                            <div class="col-md-6">
+                                <input id="desk_no" type="text" class="form-control" name="desk_no" value="{{ old('desk_no') }}" required autofocus>
+
+                                @if ($errors->has('desk_no'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('desk_no') }}</strong>
                                     </span>
                                 @endif
                             </div>

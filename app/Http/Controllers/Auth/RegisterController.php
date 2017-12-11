@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'mac_address' => 'required',
             'desk_no' => 'required|integer',
+            'serial_no' => 'required',
             'state' => 'required|integer',
         ]);
     }
@@ -66,10 +67,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        Attendance::create([
+        /*Attendance::create([
            'time' => $data(['time']),
             'present' => $data (['present']),
-        ]);
+        ]);*/
 
         return User::create([
             'name' => $data['name'],
@@ -77,6 +78,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'mac_address' => $data['mac_address'],
             'desk_no' => $data['desk_no'],
+            'serial_no' => $data['serial_no'],
             'state' => $data['state'],
             'token' => $this->randomDigit(config('smartroom.token_length'), 1) [0]
 
